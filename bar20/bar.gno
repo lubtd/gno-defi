@@ -1,4 +1,4 @@
-package foo20
+package bar20
 
 import (
 	"std"
@@ -10,13 +10,13 @@ import (
 )
 
 var (
-	foo   *grc20.Token
+	bar   *grc20.Token
 	admin std.Address = "g1jg8mtutu9khhfwc4nxmuhcpftf0pajdhfvsqf5" // test1
 )
 
 func init() {
-	foo = grc20.NewToken("Bar", "BAR", 4)
-	foo.Mint(admin, 1000000*10000)
+	bar = grc20.NewToken("Bar", "BAR", 4)
+	bar.Mint(admin, 1000000*10000)
 }
 
 // method proxies as public functions.
@@ -25,7 +25,7 @@ func init() {
 // getters.
 
 func TotalSupply() uint64 {
-	return foo.TotalSupply()
+	return bar.TotalSupply()
 }
 
 func BalanceOf(owner users.AddressOrName) uint64 {
@@ -33,24 +33,24 @@ func BalanceOf(owner users.AddressOrName) uint64 {
 }
 
 func Allowance(owner, spender users.AddressOrName) uint64 {
-	return foo.Allowance(owner.Resolve(), spender.Resolve())
+	return bar.Allowance(owner.Resolve(), spender.Resolve())
 }
 
 // setters.
 
 func Transfer(to users.AddressOrName, amount uint64) {
 	caller := std.GetCallerAt(2)
-	foo.Transfer(caller, to.Resolve(), amount)
+	bar.Transfer(caller, to.Resolve(), amount)
 }
 
 func Approve(spender users.AddressOrName, amount uint64) {
 	caller := std.GetCallerAt(2)
-	foo.Approve(caller, spender.Resolve(), amount)
+	bar.Approve(caller, spender.Resolve(), amount)
 }
 
 func TransferFrom(from, to users.AddressOrName, amount uint64) {
 	caller := std.GetCallerAt(2)
-	foo.TransferFrom(caller, from.Resolve(), to.Resolve(), amount)
+	bar.TransferFrom(caller, from.Resolve(), to.Resolve(), amount)
 }
 
 // administration.
@@ -58,13 +58,13 @@ func TransferFrom(from, to users.AddressOrName, amount uint64) {
 func Mint(address users.AddressOrName, amount uint64) {
 	caller := std.GetCallerAt(2)
 	assertIsAdmin(caller)
-	foo.Mint(address.Resolve(), amount)
+	bar.Mint(address.Resolve(), amount)
 }
 
 func Burn(address users.AddressOrName, amount uint64) {
 	caller := std.GetCallerAt(2)
 	assertIsAdmin(caller)
-	foo.Burn(address.Resolve(), amount)
+	bar.Burn(address.Resolve(), amount)
 }
 
 // render.
@@ -76,10 +76,10 @@ func Render(path string) string {
 
 	switch {
 	case path == "":
-		return foo.RenderHome()
+		return bar.RenderHome()
 	case c == 2 && parts[0] == "balance":
 		owner := users.AddressOrName(parts[1])
-		balance := foo.BalanceOf(owner.Resolve())
+		balance := bar.BalanceOf(owner.Resolve())
 		return ufmt.Sprintf("%d\n", balance)
 	default:
 		return "404\n"
