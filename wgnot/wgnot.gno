@@ -55,20 +55,26 @@ func TransferFrom(from, to users.AddressOrName, amount uint64) {
 	wgnot.TransferFrom(caller, from.Resolve(), to.Resolve(), amount)
 }
 
-// mint WGNOT from GNOT
+// mint WGNOT from deposited GNOT
 
-func Mint() {
+func Deposit() {
 	caller := std.GetCallerAt(2)
 	sent := std.GetOrigSend()
 	if len(sent) != 1 || sent[0].Denom != GNOT_DENOM {
 		panic("gnot must be sent")
 	}
+	if sent[0].Amount <= 0 {
+		panic("invalid sent amount")
+	}
 	wgnot.Mint(caller, uint64(sent[0].Amount))
 }
 
-// burn WGNOT to GNOT
+// withdraw WGNOT to GNOT
 
-func Burn(amount int64) {
+func Withdraw(amount int64) {
+	if amount <= 0 {
+		panic("invalid amount")
+	}
 	banker := std.GetBanker(std.BankerTypeRealmSend)
 	caller := std.GetCallerAt(2)
 	pkgaddr := std.GetOrigPkgAddr()
