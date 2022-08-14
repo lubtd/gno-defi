@@ -4,7 +4,7 @@ import (
 	"std"
 	"strings"
 
-	grc20 "gno.land/p/grc/grc20/impl"
+	"gno.land/p/grc/grc20"
 	"gno.land/p/ufmt"
 	"gno.land/r/users"
 )
@@ -80,6 +80,10 @@ func Withdraw(amount int64) {
 	pkgaddr := std.GetOrigPkgAddr()
 	banker.SendCoins(pkgaddr, caller, std.Coins{{GNOT_DENOM, amount}})
 	wgnot.Burn(caller, uint64(amount))
+}
+
+func GetGRC20() *grc20.Token {
+	return wgnot
 }
 
 // render.

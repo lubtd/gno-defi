@@ -4,7 +4,7 @@ import (
 	"std"
 	"strings"
 
-	grc20 "gno.land/p/grc/grc20/impl"
+	"gno.land/p/grc/grc20"
 	"gno.land/p/ufmt"
 	"gno.land/r/users"
 )
@@ -29,7 +29,7 @@ func TotalSupply() uint64 {
 }
 
 func BalanceOf(owner users.AddressOrName) uint64 {
-	return foo.BalanceOf(owner.Resolve())
+	return bar.BalanceOf(owner.Resolve())
 }
 
 func Allowance(owner, spender users.AddressOrName) uint64 {
@@ -65,6 +65,10 @@ func Burn(address users.AddressOrName, amount uint64) {
 	caller := std.GetCallerAt(2)
 	assertIsAdmin(caller)
 	bar.Burn(address.Resolve(), amount)
+}
+
+func GetGRC20() *grc20.Token {
+	return bar
 }
 
 // render.
